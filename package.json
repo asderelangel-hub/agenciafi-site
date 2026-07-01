@@ -1,0 +1,31 @@
+{
+  "name": "agenciafi-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Sitio de Agencia Fi (agencia de comunicaciones, Santiago) — OneClickLanding / Pandora Studio. Astro estático + blog Mirada Fi autogestionado con TinaCMS.",
+  "scripts": {
+    "dev": "tinacms dev -c \"astro dev\"",
+    "dev:astro": "astro dev",
+    "build": "astro build",
+    "build:cms": "tinacms build --skip-cloud-checks && astro build",
+    "preview": "astro preview",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.0",
+    "@astrojs/rss": "^4.0.0",
+    "@astrojs/sitemap": "^3.2.0",
+    "@fontsource/poppins": "^5.1.0",
+    "@fontsource/space-mono": "^5.2.9",
+    "@tinacms/cli": "^2.5.2",
+    "astro": "^5.0.0",
+    "basic-ftp": "^6.0.1",
+    "tinacms": "^3.9.4",
+    "typescript": "^5.6.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.0.0",
+    "tailwindcss": "^4.0.0"
+  }
+}

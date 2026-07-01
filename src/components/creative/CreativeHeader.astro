@@ -1,0 +1,32 @@
+---
+import { Image } from "astro:assets";
+import { site } from "../../data/site";
+import { img } from "../../lib/media";
+import { withBase } from "../../lib/base";
+
+const logo = img("simbolo.png");
+const { active } = Astro.props as { active?: string };
+
+const links = [
+  { label: "Somos Fi", href: withBase("/somos-fi"), key: "somos" },
+  { label: "Mirada Fi", href: withBase("/mirada-fi"), key: "mirada" },
+];
+---
+
+<header class="cf-header">
+  <a href={withBase("/")} aria-label="Agencia Fi — inicio">
+    <Image src={logo} alt="Agencia Fi" class="cf-logo" />
+  </a>
+  <button class="cf-burger" aria-label="Menú"><span></span><span></span><span></span></button>
+  <nav class="cf-nav">
+    {
+      links.map((l) => (
+        <a href={l.href} class={`cf-nav-link${active === l.key ? " cf-active" : ""}`}>
+          {l.label}
+        </a>
+      ))
+    }
+    <a href={`${withBase("/")}#contacto`} class="cf-nav-link">Contacto</a>
+    <a href={site.social.instagram} target="_blank" rel="noopener" class="cf-nav-link">IG ↗</a>
+  </nav>
+</header>

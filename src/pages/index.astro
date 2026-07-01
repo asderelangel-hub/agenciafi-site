@@ -1,0 +1,206 @@
+---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import CreativeLayout from "../layouts/CreativeLayout.astro";
+import CreativeHeader from "../components/creative/CreativeHeader.astro";
+import CreativeFooter from "../components/creative/CreativeFooter.astro";
+import CreativeContact from "../components/creative/CreativeContact.astro";
+import { pilares, servicios } from "../data/site";
+import { img, icon } from "../lib/media";
+import { withBase } from "../lib/base";
+
+const heroPhoto = img("fotoequiponueva.png");
+const bannerPhoto = img("banner-trabajo.png");
+const simbolo = img("simbolo.png");
+
+const posts = (await getCollection("blog", ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const featured = posts[0];
+const rest = posts.slice(1, 5);
+const fmt = (d: Date) => d.toLocaleDateString("es-CL", { year: "numeric", month: "short", day: "numeric" });
+---
+
+<CreativeLayout
+  title="Agencia Fi — Comunicación estratégica que resuena"
+  description="Conectamos tu propósito con el mundo a través de las comunicaciones. Estrategia 360, comunicación de crisis y digital para empresas y organizaciones en Chile."
+>
+  <CreativeHeader />
+
+  <!-- HERO -->
+  <section class="cf-hero">
+    <div class="cf-aurora">
+      <div class="cf-blob cf-blob-1"></div>
+      <div class="cf-blob cf-blob-2"></div>
+      <div class="cf-blob cf-blob-3"></div>
+    </div>
+    <div class="cf-wrap cf-hero-inner">
+      <div class="cf-hero-grid">
+        <div>
+          <p class="cf-kicker cf-reveal">Agencia de comunicaciones</p>
+          <h1 class="cf-reveal cf-d1">
+            Buscamos <span class="cf-word-rot" id="cf-word">conectar</span><br />
+            <span class="cf-em">tu propósito</span> con el mundo.
+          </h1>
+          <p class="cf-hero-lead cf-reveal cf-d2">
+            En un mundo saturado de información, hacemos que tu voz resuene. Somos
+            un grupo de periodistas convertidos en estrategas de la comunicación.
+          </p>
+          <div class="cf-hero-actions cf-reveal cf-d3">
+            <a href="#contacto" class="cf-btn">Conversemos →</a>
+            <a href={withBase("/somos-fi")} class="cf-btn cf-btn-ghost">Conoce Fi</a>
+          </div>
+        </div>
+        <div class="cf-hero-photo cf-reveal cf-d2">
+          <div class="cf-hero-dots"></div>
+          <div class="cf-photo-frame">
+            <Image src={heroPhoto} alt="Equipo de Agencia Fi" width={760} height={570} />
+            <div class="cf-photo-tint"></div>
+          </div>
+          <div class="cf-hero-badge"><img src={simbolo.src} alt="" /></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CÓMO LO HACEMOS -->
+  <section class="cf-section">
+    <div class="cf-wrap">
+      <div class="cf-section-head cf-reveal">
+        <p class="cf-kicker">Cómo lo hacemos</p>
+        <h2>Tres <em>pilares</em> para que tu voz resuene.</h2>
+        <p>Trabajamos a la medida, nos articulamos para cubrir tus necesidades y juntos hacemos resonar tu marca.</p>
+      </div>
+      <div class="cf-pilares">
+        {
+          pilares.map((p, i) => (
+            <div class={`cf-pilar cf-reveal cf-d${i + 1}`}>
+              <span class="cf-pilar-idx">0{i + 1} / 03</span>
+              <div class="cf-pilar-circle"><img src={icon(p.icono)} alt="" /></div>
+              <h3>{p.nombre}</h3>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- BANNER FOTO -->
+  <section class="cf-photo-banner">
+    <Image src={bannerPhoto} alt="" width={1600} height={760} />
+    <div class="cf-banner-tint"></div>
+    <p class="cf-banner-text cf-reveal">
+      Trabajamos a la medida de los clientes, nos articulamos para cubrir las
+      necesidades y juntos, hacemos resonar tu marca.
+    </p>
+  </section>
+
+  <!-- SERVICIOS (bento) -->
+  <section class="cf-section cf-section-soft">
+    <div class="cf-wrap">
+      <div class="cf-section-head cf-reveal">
+        <p class="cf-kicker">Nuestros servicios</p>
+        <h2>Construimos contigo la <em>historia</em> que quieres contar.</h2>
+      </div>
+      <div class="cf-bento">
+        {
+          servicios.map((s, i) => (
+            <div class={`cf-bento-card cf-reveal cf-d${(i % 4) + 1}`}>
+              <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                <div class="cf-bento-icon"><img src={icon(s.icono)} alt="" /></div>
+                <span class="cf-bento-num">0{i + 1}</span>
+              </div>
+              <div>
+                <h3>{s.nombre}</h3>
+                <p>Comunicación con propósito</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- MANIFIESTO -->
+  <section class="cf-manifesto">
+    <Image src={simbolo} alt="" class="cf-manifesto-mark" />
+    <div class="cf-wrap">
+      <p class="cf-manifesto-text">
+        <span class="cf-word">Desafiamos</span>
+        <span class="cf-word">estándares,</span>
+        <span class="cf-word">creamos</span>
+        <span class="cf-word">oportunidades</span>
+        <span class="cf-word">y</span>
+        <span class="cf-word">hacemos</span>
+        <span class="cf-word cf-hi">resonar</span>
+        <span class="cf-word cf-hi">tu</span>
+        <span class="cf-word cf-hi">voz.</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- MIRADA FI (blog editorial) -->
+  <section class="cf-section">
+    <div class="cf-wrap">
+      <div class="cf-section-head cf-reveal" style="display:flex;justify-content:space-between;align-items:flex-end;max-width:none;gap:1rem;flex-wrap:wrap">
+        <div>
+          <p class="cf-kicker">Mirada Fi</p>
+          <h2>Nuestra <em>lectura</em> de la actualidad.</h2>
+        </div>
+        <a href={withBase("/mirada-fi")} class="cf-btn cf-btn-ghost">Ver todo</a>
+      </div>
+      <div class="cf-blog-layout">
+        {
+          featured && (
+            <a href={withBase(`/mirada-fi/${featured.id}`)} class="cf-feature cf-reveal">
+              {featured.data.cover && <img src={withBase(featured.data.cover)} alt={featured.data.title} />}
+              <div class="cf-feature-grad"></div>
+              <div class="cf-feature-body">
+                <span class="cf-post-date" style="color:var(--cf-cyan)">{fmt(featured.data.pubDate)}</span>
+                <h3>{featured.data.title}</h3>
+                <p>{featured.data.description}</p>
+              </div>
+            </a>
+          )
+        }
+        <div class="cf-post-list cf-reveal cf-d2">
+          {
+            rest.map((post) => (
+              <a href={withBase(`/mirada-fi/${post.id}`)} class="cf-post-row">
+                {post.data.cover ? (
+                  <img src={withBase(post.data.cover)} alt={post.data.title} class="cf-post-thumb" />
+                ) : (
+                  <div class="cf-post-thumb" style="background:var(--cf-bg-soft)"></div>
+                )}
+                <div>
+                  <span class="cf-post-date">{fmt(post.data.pubDate)}</span>
+                  <h4>{post.data.title}</h4>
+                </div>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CreativeContact />
+  <CreativeFooter />
+</CreativeLayout>
+
+<script>
+  // Rotador de palabras del hero (fundido — confiable, sin clipping)
+  const palabras = ["conectar", "impulsar", "transformar", "posicionar"];
+  const el = document.getElementById("cf-word");
+  if (el) {
+    let i = 0;
+    el.style.transition = "opacity 0.3s ease";
+    setInterval(() => {
+      el.style.opacity = "0";
+      setTimeout(() => {
+        i = (i + 1) % palabras.length;
+        el.textContent = palabras[i];
+        el.style.opacity = "1";
+      }, 300);
+    }, 2600);
+  }
+</script>

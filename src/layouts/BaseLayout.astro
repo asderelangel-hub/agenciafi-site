@@ -1,0 +1,124 @@
+---
+import "@fontsource/poppins/300.css";
+import "@fontsource/poppins/400.css";
+import "@fontsource/poppins/500.css";
+import "@fontsource/poppins/600.css";
+import "@fontsource/poppins/700.css";
+import "@fontsource/poppins/800.css";
+import "@fontsource/poppins/900.css";
+import "@fontsource/poppins/400-italic.css";
+import "@fontsource/poppins/500-italic.css";
+import "@fontsource/poppins/800-italic.css";
+import "../styles/global.css";
+import { site } from "../data/site";
+import { withBase, isDemo } from "../lib/base";
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  type?: "website" | "article";
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  image = "/og-default.png",
+  type = "website",
+  noindex = false,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL(withBase(image), Astro.site).href;
+const robotsNoindex = noindex || isDemo;
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  name: site.nombre,
+  description: site.descripcion,
+  url: site.url,
+  email: site.email,
+  telephone: site.telefono,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Condell 1337",
+    addressLocality: "Providencia",
+    addressRegion: "Región Metropolitana",
+    addressCountry: "CL",
+  },
+  sameAs: [site.social.instagram, site.social.linkedin],
+  areaServed: "CL",
+};
+---
+
+<!doctype html>
+<html lang="es-CL">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href={withBase("/favicon.png")} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {robotsNoindex && <meta name="robots" content="noindex,nofollow" />}
+
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={site.nombre} />
+    <meta property="og:locale" content="es_CL" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <meta name="theme-color" content="#5A31D7" />
+    <link rel="sitemap" href={withBase("/sitemap-index.xml")} />
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </head>
+  <body>
+    <slot />
+
+    <script>
+      // Header: fondo sólido al hacer scroll
+      const header = document.getElementById("fi-header");
+      if (header) {
+        const onScroll = () =>
+          header.classList.toggle("fi-scrolled", window.scrollY > 60);
+        onScroll();
+        window.addEventListener("scroll", onScroll, { passive: true });
+      }
+
+      // Menú móvil
+      const toggle = document.querySelector(".fi-nav-toggle");
+      const navWrap = document.querySelector(".fi-header-nav-wrap");
+      toggle?.addEventListener("click", () =>
+        navWrap?.classList.toggle("fi-open")
+      );
+      navWrap?.querySelectorAll("a").forEach((a) =>
+        a.addEventListener("click", () => navWrap.classList.remove("fi-open"))
+      );
+
+      // Animaciones on-scroll
+      const animated = document.querySelectorAll(
+        ".fi-animate-fadein, .fi-animate-fadeleft, .fi-animate-faderight, .fi-animate-scalein"
+      );
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add("fi-visible");
+              io.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.15 }
+      );
+      animated.forEach((el) => io.observe(el));
+    </script>
+  </body>
+</html>

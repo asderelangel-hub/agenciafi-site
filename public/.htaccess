@@ -1,0 +1,22 @@
+# Agencia Fi — sitio estático (Astro). Reemplaza al WordPress anterior.
+# La home es index.html (no el index.php de WP).
+DirectoryIndex index.html index.php
+
+# Desactiva la caché de LiteSpeed en esta carpeta (evita que el host siga
+# sirviendo la home de WordPress cacheada tras el reemplazo).
+<IfModule LiteSpeed>
+  RewriteEngine On
+  RewriteRule .* - [E=Cache-Control:no-cache]
+</IfModule>
+
+# Caché: el HTML siempre revalida (evita que quede cacheada una versión vieja).
+# Los assets con hash de Astro (/assets/*) sí se cachean fuerte porque cambian
+# de nombre al cambiar.
+<IfModule mod_headers.c>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate, max-age=0"
+  </FilesMatch>
+  <FilesMatch "^.+\.(css|js|woff2?)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+</IfModule>

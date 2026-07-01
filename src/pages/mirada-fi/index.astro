@@ -1,0 +1,60 @@
+---
+import { getCollection } from "astro:content";
+import { withBase } from "../../lib/base";
+import CreativeLayout from "../../layouts/CreativeLayout.astro";
+import CreativeHeader from "../../components/creative/CreativeHeader.astro";
+import CreativeFooter from "../../components/creative/CreativeFooter.astro";
+import CreativeContact from "../../components/creative/CreativeContact.astro";
+
+const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+const fmt = (d: Date) => d.toLocaleDateString("es-CL", { year: "numeric", month: "long", day: "numeric" });
+---
+
+<CreativeLayout
+  title="Mirada Fi — Análisis y columnas | Agencia Fi"
+  description="Columnas y análisis del equipo de Agencia Fi sobre comunicación, actualidad, género, minería y reputación."
+>
+  <CreativeHeader active="mirada" />
+
+  <section class="cf-page-hero">
+    <div class="cf-aurora">
+      <div class="cf-blob cf-blob-1"></div>
+      <div class="cf-blob cf-blob-2"></div>
+    </div>
+    <div class="cf-wrap" style="position:relative;z-index:2">
+      <p class="cf-kicker cf-reveal">El blog</p>
+      <h1 class="cf-grad-text cf-reveal cf-d1">Mirada Fi</h1>
+      <p class="cf-hero-lead cf-reveal cf-d2" style="max-width:48ch">
+        Nuestra lectura de la comunicación y la actualidad, desde el oficio periodístico.
+      </p>
+    </div>
+  </section>
+
+  <section class="cf-section" style="padding-top:1rem">
+    <div class="cf-wrap">
+      <div class="cf-grid3">
+        {
+          posts.map((post, i) => (
+            <a href={withBase(`/mirada-fi/${post.id}`)} class={`cf-card cf-reveal cf-d${(i % 3) + 1}`}>
+              {post.data.cover && (
+                <div class="cf-card-img-wrap">
+                  <img src={withBase(post.data.cover)} alt={post.data.title} loading="lazy" />
+                </div>
+              )}
+              <div class="cf-card-body">
+                <span class="cf-post-date">{fmt(post.data.pubDate)}</span>
+                <h3>{post.data.title}</h3>
+                <p>{post.data.description}</p>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CreativeContact />
+  <CreativeFooter />
+</CreativeLayout>

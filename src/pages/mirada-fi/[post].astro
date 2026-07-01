@@ -1,0 +1,97 @@
+---
+import { getCollection, render } from "astro:content";
+import { withBase } from "../../lib/base";
+import CreativeLayout from "../../layouts/CreativeLayout.astro";
+import CreativeHeader from "../../components/creative/CreativeHeader.astro";
+import CreativeFooter from "../../components/creative/CreativeFooter.astro";
+import CreativeContact from "../../components/creative/CreativeContact.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog", ({ data }) => !data.draft);
+  return posts.map((post) => ({ params: { post: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const fmt = (d: Date) =>
+  d.toLocaleDateString("es-CL", { year: "numeric", month: "long", day: "numeric" });
+
+// Otros 3 posts para "Sigue leyendo"
+const otros = (await getCollection("blog", ({ data }) => !data.draft))
+  .filter((p) => p.id !== post.id)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+---
+
+<CreativeLayout
+  title={`${post.data.title} | Mirada Fi — Agencia Fi`}
+  description={post.data.description}
+  type="article"
+  image={post.data.cover}
+>
+  <CreativeHeader active="mirada" />
+
+  <!-- CABECERA DEL POST -->
+  <header class="cf-post-hero">
+    <div class="cf-aurora">
+      <div class="cf-blob cf-blob-1"></div>
+      <div class="cf-blob cf-blob-2"></div>
+    </div>
+    <div class="cf-post-hero-inner">
+      <a href={withBase("/mirada-fi")} class="cf-post-back cf-reveal">← Mirada Fi</a>
+      <p class="cf-kicker cf-reveal cf-d1">{post.data.categoria} · {fmt(post.data.pubDate)}</p>
+      <h1 class="cf-post-title cf-grad-text cf-reveal cf-d2">{post.data.title}</h1>
+      <p class="cf-post-lead cf-reveal cf-d3">{post.data.description}</p>
+    </div>
+    {
+      post.data.cover && (
+        <div class="cf-post-cover cf-reveal cf-d2">
+          <img src={withBase(post.data.cover)} alt={post.data.title} />
+        </div>
+      )
+    }
+  </header>
+
+  <!-- CUERPO -->
+  <article class="cf-article">
+    <div class="cf-article-body">
+      <Content />
+    </div>
+    <div class="cf-article-foot">
+      <span class="cf-article-rule"></span>
+      <a href={withBase("/mirada-fi")} class="cf-btn cf-btn-ghost">← Volver a Mirada Fi</a>
+    </div>
+  </article>
+
+  <!-- SIGUE LEYENDO -->
+  {
+    otros.length > 0 && (
+      <section class="cf-section cf-section-soft">
+        <div class="cf-wrap">
+          <div class="cf-section-head cf-reveal" style="margin-bottom:2.5rem">
+            <p class="cf-kicker">Sigue leyendo</p>
+            <h2>Más <em>Mirada Fi</em></h2>
+          </div>
+          <div class="cf-grid3">
+            {otros.map((p, i) => (
+              <a href={withBase(`/mirada-fi/${p.id}`)} class={`cf-card cf-reveal cf-d${(i % 3) + 1}`}>
+                {p.data.cover && (
+                  <div class="cf-card-img-wrap">
+                    <img src={withBase(p.data.cover)} alt={p.data.title} loading="lazy" />
+                  </div>
+                )}
+                <div class="cf-card-body">
+                  <span class="cf-post-date">{fmt(p.data.pubDate)}</span>
+                  <h3>{p.data.title}</h3>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <CreativeContact />
+  <CreativeFooter />
+</CreativeLayout>

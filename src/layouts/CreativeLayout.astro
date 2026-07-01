@@ -1,0 +1,130 @@
+---
+import "@fontsource/poppins/400.css";
+import "@fontsource/poppins/500.css";
+import "@fontsource/poppins/600.css";
+import "@fontsource/poppins/700.css";
+import "@fontsource/poppins/800.css";
+import "@fontsource/poppins/900.css";
+import "@fontsource/poppins/800-italic.css";
+import "@fontsource/poppins/900-italic.css";
+import "../styles/creative.css";
+import { site } from "../data/site";
+import { withBase, isDemo } from "../lib/base";
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  type?: "website" | "article";
+}
+
+const {
+  title,
+  description,
+  image = "/og-default.png",
+  type = "website",
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL(withBase(image), Astro.site).href;
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  name: site.nombre,
+  description: site.descripcion,
+  url: site.url,
+  email: site.email,
+  telephone: site.telefono,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Condell 1337",
+    addressLocality: "Providencia",
+    addressRegion: "Región Metropolitana",
+    addressCountry: "CL",
+  },
+  sameAs: [site.social.instagram, site.social.linkedin],
+};
+---
+
+<!doctype html>
+<html lang="es-CL" class="cf-root">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href={withBase("/favicon.png")} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {isDemo && <meta name="robots" content="noindex,nofollow" />}
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={site.nombre} />
+    <meta property="og:locale" content="es_CL" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="theme-color" content="#0c0a18" />
+    <link rel="sitemap" href={withBase("/sitemap-index.xml")} />
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </head>
+  <body class="cf-body">
+    <div class="cf-progress" id="cf-progress"></div>
+    <slot />
+
+    <script>
+      // Barra de progreso de scroll
+      const bar = document.getElementById("cf-progress");
+      const onScroll = () => {
+        const h = document.documentElement;
+        const max = h.scrollHeight - h.clientHeight;
+        if (bar) bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + "%";
+        const header = document.querySelector(".cf-header");
+        header?.classList.toggle("cf-stuck", window.scrollY > 40);
+      };
+      onScroll();
+      window.addEventListener("scroll", onScroll, { passive: true });
+
+      // Menú móvil
+      const burger = document.querySelector(".cf-burger");
+      const nav = document.querySelector(".cf-nav");
+      burger?.addEventListener("click", () => nav?.classList.toggle("cf-open"));
+      nav?.querySelectorAll("a").forEach((a) =>
+        a.addEventListener("click", () => nav.classList.remove("cf-open"))
+      );
+
+      // Reveal on scroll
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add("cf-in");
+              io.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.12 }
+      );
+      document.querySelectorAll(".cf-reveal").forEach((el) => io.observe(el));
+
+      // Manifiesto: encender palabras al entrar
+      const manifesto = document.querySelector(".cf-manifesto-text");
+      if (manifesto) {
+        const mo = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) {
+                manifesto.classList.add("cf-lit");
+                mo.disconnect();
+              }
+            });
+          },
+          { threshold: 0.5 }
+        );
+        mo.observe(manifesto);
+      }
+    </script>
+  </body>
+</html>

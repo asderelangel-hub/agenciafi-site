@@ -1,0 +1,46 @@
+---
+import { getCollection, render } from "astro:content";
+import { withBase } from "../lib/base";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog", ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { post: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const fmtFecha = (d: Date) =>
+  d.toLocaleDateString("es-CL", { year: "numeric", month: "long", day: "numeric" });
+---
+
+<BaseLayout
+  title={`${post.data.title} | Mirada Fi — Agencia Fi`}
+  description={post.data.description}
+  type="article"
+  image={post.data.cover}
+>
+  <Header />
+
+  <article class="fi-article">
+    <p class="fi-article-meta">{post.data.categoria} · {fmtFecha(post.data.pubDate)}</p>
+    <h1>{post.data.title}</h1>
+    {
+      post.data.cover && (
+        <img src={withBase(post.data.cover)} alt={post.data.title} class="fi-article-cover" width={760} height={428} />
+      )
+    }
+    <div class="fi-article-body">
+      <Content />
+    </div>
+    <a href={withBase("/mirada-fi")} class="fi-article-back">&lt; Volver a Mirada Fi</a>
+  </article>
+
+  <Footer />
+</BaseLayout>

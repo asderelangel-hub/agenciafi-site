@@ -1,0 +1,61 @@
+name: Build y deploy a hosting (FTP)
+
+# Se dispara con push a main (incluye los commits que crea el CMS al publicar un post en Mirada Fi).
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+concurrency:
+  group: deploy-agenciafi
+  cancel-in-progress: true
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Build (TinaCMS + Astro)
+        # Si hay credenciales de TinaCloud → build con el panel /admin (build:cms).
+        # Si no, solo el sitio (permite validar el auto-deploy con los secrets FTP solos).
+        run: |
+          if [ -n "$TINA_CLIENT_ID" ]; then
+            echo "TinaCloud configurado → build con CMS (/admin)"
+            npm run build:cms
+          else
+            echo "Sin TINA_CLIENT_ID → build del sitio (sin /admin)"
+            npm run build
+          fi
+        env:
+          # El runner tiene menos RAM que local → el build de Tina+Astro reventaba con
+          # exit 134 (JavaScript heap out of memory). Subimos el heap de Node.
+          NODE_OPTIONS: --max-old-space-size=4096
+          PUBLIC_SITE_URL: https://agenciafi.cl
+          # PRODUCCIÓN en la raíz → SIN PUBLIC_BASE_PATH (base "/").
+          # Credenciales de TinaCloud (Settings → Secrets → Actions):
+          TINA_CLIENT_ID: ${{ secrets.TINA_CLIENT_ID }}
+          TINA_TOKEN: ${{ secrets.TINA_TOKEN }}
+          TINA_BRANCH: main
+
+      # Sube dist/ al hosting por FTP. Secrets en GitHub → Settings → Secrets → Actions:
+      #   FTP_SERVER=ftp.agenciafi.cl  FTP_USERNAME=web@agenciafi.cl  FTP_PASSWORD=***  FTP_REMOTE_DIR=public_html/
+      - name: Deploy por FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./dist/
+          server-dir: ${{ secrets.FTP_REMOTE_DIR }}
+          protocol: ftps

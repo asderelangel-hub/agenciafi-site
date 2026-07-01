@@ -1,0 +1,109 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import ContactForm from "../components/ContactForm.astro";
+import { timeline, equipo, amigos } from "../data/site";
+import { img } from "../lib/media";
+
+const heroImg = img("fotoequiponueva.png");
+---
+
+<BaseLayout
+  title="Somos Fi — Equipo e historia | Agencia Fi"
+  description="Conoce al equipo de Agencia Fi: un grupo de periodistas que hacen comunicación estratégica con propósito. Nuestra historia, equipo y los amigos de Fi."
+>
+  <Header />
+
+  <!-- HERO -->
+  <section class="fi-hero-clipped" style={`background-image:url(${heroImg.src})`}>
+    <div class="fi-hero-overlay"></div>
+    <div class="fi-hero-content">
+      <h1 class="fi-hero-title">Somos Fi</h1>
+    </div>
+  </section>
+
+  <!-- LÍNEA DE TIEMPO -->
+  <section class="fi-timeline-section">
+    <h2 class="fi-timeline-intro fi-animate-fadein">
+      Agencia Fi surge de un grupo de periodistas, amantes del reporteo y de la
+      prensa, que descubren como agencia de comunicaciones una nueva manera de
+      contribuir a la sociedad
+    </h2>
+    <div class="fi-timeline-grid">
+      {
+        timeline.map((t, i) => (
+          <div class={`fi-timeline-card fi-animate-fadein fi-delay-${i + 1}`}>
+            <h3 class="fi-timeline-card-title">{t.titulo}</h3>
+            <p class="fi-timeline-card-text">{t.texto}</p>
+            <div class="fi-timeline-date">
+              <div class="fi-timeline-date-icon">&gt;</div>
+              <span class="fi-timeline-date-text">{t.fecha}</span>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- EQUIPO -->
+  <section class="fi-equipo-section">
+    <h2 class="fi-equipo-title fi-animate-fadein">NUESTRO <span class="fi-accent">EQUIPO</span></h2>
+    <div class="fi-equipo-grid">
+      {
+        equipo.map((m) => (
+          <a class="fi-miembro-wrap fi-animate-scalein" href={m.linkedin} target="_blank" rel="noopener" style="text-decoration:none;color:inherit">
+            <Image
+              src={img(m.foto)}
+              alt={m.nombre}
+              class={m.borde === "cyan" ? "fi-miembro-foto-cyan" : "fi-miembro-foto-purple"}
+              width={350}
+              height={350}
+            />
+            <h3 class="fi-miembro-nombre">{m.nombre}</h3>
+            <p class="fi-miembro-cargo">{m.cargo}</p>
+            <span class="fi-linkedin-icon">LinkedIn ↗</span>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- PROPÓSITO -->
+  <section class="fi-proposito-section" style={`background-image:url(${heroImg.src})`}>
+    <div class="fi-proposito-overlay"></div>
+    <p class="fi-proposito-text fi-animate-fadein">
+      En Agencia Fi nuestro propósito es generar redes y diálogo, lograr que la
+      comunicación fluya entre los diferentes actores de la sociedad, y ser un
+      puente entre ellos. Por eso la colaboración es clave en nuestro trabajo, y
+      los amigos de Fi nos ayudan a lograrlo.
+    </p>
+  </section>
+
+  <!-- AMIGOS FI -->
+  <section class="fi-amigos-section">
+    <h2 class="fi-amigos-title fi-animate-fadein">AMIGOS <span class="fi-accent">FI</span></h2>
+    <div class="fi-amigos-grid">
+      {
+        amigos.map((a) => (
+          <div class="fi-amigo-wrap fi-animate-scalein">
+            <Image src={img(a.foto)} alt={a.nombre} class="fi-amigo-foto" width={350} height={350} />
+            <h3 class="fi-amigo-nombre">{a.nombre}</h3>
+            <p class="fi-amigo-rol">{a.rol}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- TODO ES COMUNICACIÓN -->
+  <section class="fi-comunicacion-section">
+    <h2 class="fi-comunicacion-text fi-animate-fadein">
+      ¡Todo es <span style="color:#5A31D7">comunicación</span>!
+    </h2>
+  </section>
+
+  <ContactForm />
+  <Footer />
+</BaseLayout>

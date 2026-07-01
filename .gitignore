@@ -1,0 +1,19 @@
+# build output
+dist/
+.astro/
+
+# TinaCMS — generados por `tinacms build` (se regeneran en CI). tina-lock.json SÍ se commitea.
+tina/__generated__/
+public/admin/
+
+# deps
+node_modules/
+
+# env y credenciales
+.env
+.env.*
+deploy.md
+
+# os
+.DS_Store
+Thumbs.db

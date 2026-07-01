@@ -1,0 +1,30 @@
+---
+import { web3formsKey } from "../../data/site";
+---
+
+<section class="cf-section cf-cta" id="contacto">
+  <div class="cf-aurora">
+    <div class="cf-blob cf-blob-2" style="opacity:0.22"></div>
+    <div class="cf-blob cf-blob-3" style="opacity:0.2"></div>
+  </div>
+  <div class="cf-wrap" style="position:relative;z-index:2">
+    <p class="cf-kicker cf-reveal" style="justify-content:center">Hablemos</p>
+    <h2 class="cf-reveal cf-d1" style="margin-top:1rem">
+      ¿Quieres crecer y <em class="cf-grad-text">transformar</em> junto a nosotros?
+    </h2>
+    <form
+      class="cf-form cf-reveal cf-d2"
+      action="https://api.web3forms.com/submit"
+      method="POST"
+    >
+      <input type="hidden" name="access_key" value={web3formsKey} />
+      <input type="hidden" name="subject" value="Nuevo contacto desde agenciafi.cl" />
+      <input type="text" name="botcheck" style="display:none" tabindex="-1" autocomplete="off" />
+      <input type="text" name="nombre" placeholder="Tu nombre" required />
+      <input type="email" name="email" placeholder="Tu email" required />
+      <input type="text" name="empresa" placeholder="Empresa (opcional)" />
+      <textarea name="mensaje" placeholder="Cuéntanos en qué te podemos ayudar" required></textarea>
+      <button type="submit" class="cf-btn" style="justify-content:center">Enviar mensaje →</button>
+    </form>
+  </div>
+</section>

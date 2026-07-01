@@ -1,0 +1,47 @@
+---
+import { getCollection } from "astro:content";
+import { withBase } from "../../lib/base";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+
+const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const fmtFecha = (d: Date) =>
+  d.toLocaleDateString("es-CL", { year: "numeric", month: "long", day: "numeric" });
+---
+
+<BaseLayout
+  title="Mirada Fi — Análisis y columnas | Agencia Fi"
+  description="Columnas y análisis del equipo de Agencia Fi sobre comunicación, actualidad, género, minería y reputación. La mirada de una agencia de comunicaciones."
+>
+  <Header />
+
+  <section class="fi-page-hero">
+    <h1 class="fi-page-hero-title">Mirada Fi</h1>
+    <p class="fi-page-hero-sub">Nuestra mirada sobre la comunicación y la actualidad</p>
+  </section>
+
+  <section class="fi-blog-index">
+    <div class="fi-blog-index-grid">
+      {
+        posts.map((post) => (
+          <a href={withBase(`/${post.id}`)} class="fi-post-card">
+            {post.data.cover && (
+              <img src={withBase(post.data.cover)} alt={post.data.title} class="fi-post-card-img" width={520} height={325} loading="lazy" />
+            )}
+            <div class="fi-post-card-body">
+              <span class="fi-post-card-date">{fmtFecha(post.data.pubDate)}</span>
+              <h2 class="fi-post-card-title">{post.data.title}</h2>
+              <p class="fi-post-card-desc">{post.data.description}</p>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>

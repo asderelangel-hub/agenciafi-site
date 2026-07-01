@@ -1,0 +1,121 @@
+---
+import { Image } from "astro:assets";
+import CreativeLayout from "../layouts/CreativeLayout.astro";
+import CreativeHeader from "../components/creative/CreativeHeader.astro";
+import CreativeFooter from "../components/creative/CreativeFooter.astro";
+import CreativeContact from "../components/creative/CreativeContact.astro";
+import { timeline, equipo, amigos } from "../data/site";
+import { img } from "../lib/media";
+
+const heroPhoto = img("fotoequiponueva.png");
+// duplicar amigos para loop continuo del marquee
+const amigosLoop = [...amigos, ...amigos];
+---
+
+<CreativeLayout
+  title="Somos Fi — Equipo e historia | Agencia Fi"
+  description="Conoce al equipo de Agencia Fi: periodistas que hacen comunicación estratégica con propósito. Nuestra historia, el equipo y los amigos de Fi."
+>
+  <CreativeHeader active="somos" />
+
+  <!-- HERO -->
+  <section class="cf-page-hero">
+    <div class="cf-aurora">
+      <div class="cf-blob cf-blob-1"></div>
+      <div class="cf-blob cf-blob-2"></div>
+    </div>
+    <div class="cf-wrap" style="position:relative;z-index:2">
+      <p class="cf-kicker cf-reveal">Quiénes somos</p>
+      <h1 class="cf-grad-text cf-reveal cf-d1">Somos Fi</h1>
+      <p class="cf-hero-lead cf-reveal cf-d2" style="max-width:50ch">
+        Agencia Fi surge de un grupo de periodistas, amantes del reporteo y de la
+        prensa, que descubren como agencia de comunicaciones una nueva manera de
+        contribuir a la sociedad.
+      </p>
+    </div>
+  </section>
+
+  <!-- LÍNEA DE TIEMPO -->
+  <section class="cf-section" style="padding-top:2rem">
+    <div class="cf-wrap">
+      <div class="cf-section-head cf-reveal" style="text-align:center;margin:0 auto 3.5rem">
+        <p class="cf-kicker" style="justify-content:center">Nuestra historia</p>
+      </div>
+      <div class="cf-timeline">
+        {
+          timeline.map((t) => (
+            <div class="cf-tl-item cf-reveal">
+              <span class="cf-tl-date">{t.fecha}</span>
+              <h3>{t.titulo}</h3>
+              <p>{t.texto}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- EQUIPO -->
+  <section class="cf-section">
+    <div class="cf-wrap">
+      <div class="cf-section-head cf-reveal" style="text-align:center;margin:0 auto 3.5rem">
+        <p class="cf-kicker" style="justify-content:center">El equipo</p>
+        <h2>Nuestro <em>equipo</em></h2>
+      </div>
+      <div class="cf-team-grid">
+        {
+          equipo.map((m, i) => (
+            <a
+              href={m.linkedin}
+              target="_blank"
+              rel="noopener"
+              class={`cf-member cf-reveal cf-d${(i % 4) + 1}`}
+            >
+              <div class="cf-member-photo">
+                <Image src={img(m.foto)} alt={m.nombre} width={336} height={336} />
+              </div>
+              <h3>{m.nombre}</h3>
+              <p class="cf-role">{m.cargo}</p>
+              <span class="cf-member-link">LinkedIn ↗</span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- PROPÓSITO (banner de foto) -->
+  <section class="cf-proposito">
+    <img class="cf-prop-bg" src={heroPhoto.src} alt="" />
+    <div class="cf-prop-tint"></div>
+    <p class="cf-prop-text cf-reveal">
+      Nuestro propósito es ser <em>un puente</em>: que la comunicación fluya entre los actores de la sociedad.
+    </p>
+  </section>
+
+  <!-- AMIGOS FI (marquee) -->
+  <section class="cf-section" style="padding-top:0">
+    <div class="cf-wrap">
+      <div class="cf-section-head cf-reveal" style="text-align:center;margin:0 auto 3rem">
+        <p class="cf-kicker" style="justify-content:center">Colaboradores</p>
+        <h2>Amigos <em>Fi</em></h2>
+      </div>
+    </div>
+    <div class="cf-amigos-row">
+      <div class="cf-amigos-track">
+        {
+          amigosLoop.map((a) => (
+            <div class="cf-amigo">
+              <Image src={img(a.foto)} alt={a.nombre} width={220} height={220} />
+              <h4>{a.nombre}</h4>
+              <p>{a.rol}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CreativeContact />
+  <CreativeFooter />
+</CreativeLayout>

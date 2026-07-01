@@ -1,0 +1,196 @@
+---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import ContactForm from "../components/ContactForm.astro";
+import { pilares, servicios, heroPalabras } from "../data/site";
+import { img, icon } from "../lib/media";
+import { withBase } from "../lib/base";
+
+const heroImg = img("fotoequiponueva.png");
+const aboutLogo = img("logo-secundario.png");
+const simbolo = img("simbolo.png");
+
+// 3 posts más recientes para la grilla "Mirada Fi"
+const posts = (await getCollection("blog", ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+---
+
+<BaseLayout
+  title="Agencia Fi — Agencia de comunicaciones estratégicas"
+  description="Conectamos tu propósito con el mundo a través de las comunicaciones. Estrategia 360, comunicación de crisis y digital para empresas y organizaciones en Chile."
+>
+  <Header />
+
+  <!-- HERO con video -->
+  <section class="fi-hero-section">
+    <video
+      class="fi-hero-video"
+      autoplay
+      muted
+      loop
+      playsinline
+      poster={heroImg.src}
+    >
+      <source src={withBase("/video-hero.mp4")} type="video/mp4" />
+    </video>
+    <div class="fi-hero-overlay"></div>
+    <div class="fi-hero-content">
+      <h1 class="fi-hero-title fi-animate-fadein">En Agencia Fi</h1>
+      <h1 class="fi-hero-title fi-animate-fadein fi-delay-1">
+        buscamos <span class="fi-accent" id="carousel-word">{heroPalabras[0]}</span> tu propósito
+      </h1>
+      <h1 class="fi-hero-title fi-animate-fadein fi-delay-2">
+        con el mundo a <span class="fi-underline-accent">través de las comunicaciones</span>
+      </h1>
+    </div>
+  </section>
+
+  <div class="fi-divider-purple-bg">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 100" preserveAspectRatio="none">
+      <path d="M0,100 C360,0 1080,0 1440,100 L1440,100 L0,100 Z" fill="white"></path>
+    </svg>
+  </div>
+
+  <!-- CÓMO LO HACEMOS -->
+  <section class="fi-section-white">
+    <h2 class="fi-section-title fi-animate-fadein">¿Cómo lo hacemos?</h2>
+    <p class="fi-section-subtitle fi-animate-fadein fi-delay-1">
+      En un mundo saturado de información, es clave que tu voz resuene. Para eso,
+      como Agencia Fi te apoyamos a través de 3 pilares estratégicos:
+    </p>
+    <div class="fi-pilares-row">
+      {
+        pilares.map((p, i) => (
+          <div class={`fi-pilar-item fi-animate-scalein fi-delay-${i + 1}`}>
+            <img src={icon(p.icono)} alt={p.nombre} class="fi-pilar-icon-img" width="48" height="48" />
+            <span class="fi-pilar-name">{p.nombre}</span>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- BANNER FRASE -->
+  <section class="fi-banner-section" style={`background-image:url(${heroImg.src})`}>
+    <div class="fi-banner-overlay"></div>
+    <p class="fi-banner-text fi-animate-fadein">
+      Trabajamos a la medida de los clientes, nos articulamos para cubrir las
+      necesidades y juntos, hacemos resonar tu marca.
+    </p>
+  </section>
+
+  <!-- SERVICIOS -->
+  <section class="fi-section-white">
+    <h2 class="fi-section-title-purple fi-animate-fadein">Nuestros Servicios</h2>
+    <p class="fi-section-subtitle fi-animate-fadein fi-delay-1">
+      A través de nuestros servicios, te acompañamos en el paso a paso del
+      posicionamiento de tu marca y construimos contigo la historia que quieras contar.
+    </p>
+    <div class="fi-services-grid">
+      {
+        servicios.slice(0, 3).map((s, i) => (
+          <div class={`fi-service-card fi-animate-scalein fi-delay-${i + 1}`}>
+            <div class="fi-service-icon">
+              <img src={icon(s.icono)} alt={s.nombre} class="fi-service-icon-img" width="50" height="50" />
+            </div>
+            <h3 class="fi-service-name">{s.nombre}</h3>
+          </div>
+        ))
+      }
+    </div>
+    <div class="fi-services-row2">
+      {
+        servicios.slice(3).map((s, i) => (
+          <div class={`fi-service-card fi-animate-scalein fi-delay-${i + 4}`}>
+            <div class="fi-service-icon">
+              <img src={icon(s.icono)} alt={s.nombre} class="fi-service-icon-img" width="50" height="50" />
+            </div>
+            <h3 class="fi-service-name">{s.nombre}</h3>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- NACE DE PERIODISTAS -->
+  <section class="fi-section-purple">
+    <Image src={aboutLogo} alt="Fi" class="fi-about-logo fi-animate-scalein" />
+    <p class="fi-about-text fi-animate-fadein fi-delay-1">
+      Agencia Fi surge de un grupo de periodistas, amantes del reporteo y de la
+      prensa, que descubren como agencia de comunicaciones una nueva manera de
+      contribuir a la sociedad.
+    </p>
+    <p class="fi-about-cta fi-animate-fadein fi-delay-2">Conoce nuestro equipo y nuestra historia</p>
+    <a href={withBase("/somos-fi")} class="fi-btn-accent fi-animate-fadein fi-delay-3">Somos Fi</a>
+  </section>
+
+  <!-- MIRADA FI (blog) -->
+  <section class="fi-section-white">
+    <h2 class="fi-section-title fi-animate-fadein">Mirada Fi</h2>
+    <div class="fi-blog-grid">
+      {
+        posts.map((post, i) => (
+          <div
+            class={`fi-blog-card-wrap fi-animate-fadein fi-delay-${i + 1}`}
+            style={post.data.cover ? `background-image:url(${withBase(post.data.cover)})` : "background:#5A31D7"}
+          >
+            <div class="fi-blog-card-overlay"></div>
+            <div class="fi-blog-card-content">
+              <h3 class="fi-blog-card-title">{post.data.title}</h3>
+            </div>
+            <a href={withBase(`/${post.id}`)} class="fi-blog-card-link">Leer más &gt;</a>
+          </div>
+        ))
+      }
+    </div>
+    <div style="text-align:center;margin-top:1rem">
+      <a href={withBase("/mirada-fi")} class="fi-btn-accent">Ver todo</a>
+    </div>
+  </section>
+
+  <!-- VALORES -->
+  <section class="fi-valores-section" style={`background-image:url(${heroImg.src})`}>
+    <div class="fi-valores-overlay"></div>
+    <div class="fi-valores-content">
+      <Image src={simbolo} alt="Fi" class="fi-valores-logo fi-animate-scalein" />
+      <p class="fi-valores-text fi-animate-fadein fi-delay-1">
+        Desafiamos estándares, barreras y creamos oportunidades. Somos intrépidos
+        en nuestras estrategias, audaces en nuestras ideas y precisos en nuestras
+        ejecuciones.
+      </p>
+    </div>
+  </section>
+
+  <!-- MENSAJE -->
+  <section class="fi-mensaje-section">
+    <p class="fi-mensaje-text fi-animate-fadeleft">
+      Te ayudamos a expandir tu mensaje, anticipar y manejar crisis
+    </p>
+  </section>
+
+  <ContactForm />
+  <Footer />
+</BaseLayout>
+
+<script>
+  // Carrusel de palabras del hero
+  const palabras = ["conectar", "impulsar", "transformar", "posicionar"];
+  const el = document.getElementById("carousel-word");
+  if (el) {
+    let i = 0;
+    setInterval(() => {
+      i = (i + 1) % palabras.length;
+      el.style.opacity = "0";
+      setTimeout(() => {
+        el.textContent = palabras[i];
+        el.style.opacity = "1";
+      }, 250);
+    }, 2600);
+    el.style.transition = "opacity 250ms ease";
+    el.style.display = "inline-block";
+  }
+</script>
