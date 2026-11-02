@@ -70,11 +70,18 @@ import { withBase } from "../../lib/base";
       button.textContent = "Enviando…";
       status.hidden = true;
       try {
-        const res = await fetch(form.action, {
-          method: "POST",
-          body: new FormData(form),
-          headers: { Accept: "application/json" },
-        });
+        const body = new FormData(form);
+        const post = () => fetch(form.action, { method: "POST", body, headers: { Accept: "application/json" } });
+        let res = await post();
+        // HostGator responde 409 a los POST a .php sin su cookie anti-bot «humans_NNNN»
+        // (las páginas HTML no la piden). Se guarda la cookie que indica y se reintenta una vez.
+        if (res.status === 409) {
+          const m = (await res.text()).match(/document\.cookie\s*=\s*"([^";]+)/);
+          if (m) {
+            document.cookie = `${m[1]}; path=/; SameSite=Lax`;
+            res = await post();
+          }
+        }
         const data = await res.json().catch(() => ({}));
         if (res.ok && data.success) {
           form.reset();
