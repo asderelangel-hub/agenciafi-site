@@ -1,0 +1,37 @@
+---
+import CreativeLayout from "../layouts/CreativeLayout.astro";
+import CreativeHeader from "../components/creative/CreativeHeader.astro";
+import CreativeFooter from "../components/creative/CreativeFooter.astro";
+import CreativeContact from "../components/creative/CreativeContact.astro";
+---
+
+<CreativeLayout
+  title="Contacto — Conversemos sobre tu desafío | Agencia Fi"
+  description="¿Buscas fortalecer la reputación de tu organización, comunicar un proceso de transformación o desarrollar una estrategia de posicionamiento? Escríbenos y conversemos."
+>
+  <CreativeHeader active="contacto" />
+
+  <section class="cf-page-hero">
+    <div class="cf-aurora">
+      <div class="cf-blob cf-blob-1"></div>
+      <div class="cf-blob cf-blob-2"></div>
+    </div>
+    <div class="cf-wrap" style="position:relative;z-index:2">
+      <p class="cf-kicker cf-reveal">Contacto</p>
+      <h1 class="cf-h1-statement cf-reveal cf-d1">
+        Conversemos sobre tu <em>desafío.</em>
+      </h1>
+      <p class="cf-hero-lead cf-reveal cf-d2" style="max-width:60ch">
+        ¿Buscas fortalecer la reputación de tu organización, comunicar un proceso de
+        transformación o desarrollar una estrategia de posicionamiento? En Agencia
+        Fi podemos acompañarte.
+      </p>
+      <p class="cf-hero-lead cf-reveal cf-d3" style="max-width:60ch;margin-top:1rem">
+        Escríbenos y conversemos sobre lo que necesita tu organización.
+      </p>
+    </div>
+  </section>
+
+  <CreativeContact />
+  <CreativeFooter />
+</CreativeLayout>

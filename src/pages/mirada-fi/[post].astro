@@ -4,7 +4,7 @@ import { withBase } from "../../lib/base";
 import CreativeLayout from "../../layouts/CreativeLayout.astro";
 import CreativeHeader from "../../components/creative/CreativeHeader.astro";
 import CreativeFooter from "../../components/creative/CreativeFooter.astro";
-import CreativeContact from "../../components/creative/CreativeContact.astro";
+import CreativeCta from "../../components/creative/CreativeCta.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog", ({ data }) => !data.draft);
@@ -92,6 +92,6 @@ const otros = (await getCollection("blog", ({ data }) => !data.draft))
     )
   }
 
-  <CreativeContact />
+  <CreativeCta />
   <CreativeFooter />
 </CreativeLayout>

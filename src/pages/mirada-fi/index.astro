@@ -4,7 +4,7 @@ import { withBase } from "../../lib/base";
 import CreativeLayout from "../../layouts/CreativeLayout.astro";
 import CreativeHeader from "../../components/creative/CreativeHeader.astro";
 import CreativeFooter from "../../components/creative/CreativeFooter.astro";
-import CreativeContact from "../../components/creative/CreativeContact.astro";
+import CreativeCta from "../../components/creative/CreativeCta.astro";
 
 const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
@@ -13,8 +13,8 @@ const fmt = (d: Date) => d.toLocaleDateString("es-CL", { year: "numeric", month:
 ---
 
 <CreativeLayout
-  title="Mirada Fi — Análisis y columnas | Agencia Fi"
-  description="Columnas y análisis del equipo de Agencia Fi sobre comunicación, actualidad, género, minería y reputación."
+  title="Mirada Fi — Columnas y análisis | Agencia Fi"
+  description="Desde nuestra experiencia periodística y estratégica, analizamos tendencias, decisiones y acontecimientos que impactan la reputación, la sostenibilidad y el desarrollo de las organizaciones."
 >
   <CreativeHeader active="mirada" />
 
@@ -24,10 +24,18 @@ const fmt = (d: Date) => d.toLocaleDateString("es-CL", { year: "numeric", month:
       <div class="cf-blob cf-blob-2"></div>
     </div>
     <div class="cf-wrap" style="position:relative;z-index:2">
-      <p class="cf-kicker cf-reveal">El blog</p>
-      <h1 class="cf-grad-text cf-reveal cf-d1">Mirada Fi</h1>
-      <p class="cf-hero-lead cf-reveal cf-d2" style="max-width:48ch">
-        Nuestra lectura de la comunicación y la actualidad, desde el oficio periodístico.
+      <p class="cf-kicker cf-reveal">Mirada Fi</p>
+      <h1 class="cf-h1-statement cf-h1-long cf-reveal cf-d1">
+        Una mirada propia sobre las conversaciones que están <em>transformando el mundo empresarial.</em>
+      </h1>
+      <p class="cf-hero-lead cf-reveal cf-d2" style="max-width:60ch">
+        Desde nuestra experiencia periodística y estratégica, analizamos tendencias,
+        decisiones y acontecimientos que impactan la reputación, la sostenibilidad y
+        el desarrollo de las organizaciones.
+      </p>
+      <p class="cf-hero-lead cf-reveal cf-d3" style="max-width:60ch;margin-top:1rem">
+        Columnas, análisis de actualidad y reflexiones sobre los temas que importan
+        al mundo empresarial.
       </p>
     </div>
   </section>
@@ -55,6 +63,6 @@ const fmt = (d: Date) => d.toLocaleDateString("es-CL", { year: "numeric", month:
     </div>
   </section>
 
-  <CreativeContact />
+  <CreativeCta />
   <CreativeFooter />
 </CreativeLayout>

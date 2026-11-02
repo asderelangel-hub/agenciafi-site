@@ -1,0 +1,28 @@
+---
+// Cierre de página: invita a conversar y lleva a /contacto.
+import { withBase } from "../../lib/base";
+
+interface Props {
+  titulo?: string;
+  texto?: string;
+  boton?: string;
+}
+
+const {
+  titulo = "Conversemos",
+  texto = "Cada desafío requiere una solución distinta. Cuéntanos qué necesita tu organización y diseñemos una estrategia.",
+  boton = "Solicita una reunión",
+} = Astro.props;
+---
+
+<section class="cf-section cf-cta">
+  <div class="cf-aurora">
+    <div class="cf-blob cf-blob-2" style="opacity:0.22"></div>
+    <div class="cf-blob cf-blob-3" style="opacity:0.2"></div>
+  </div>
+  <div class="cf-wrap" style="position:relative;z-index:2">
+    <h2 class="cf-reveal">{titulo}</h2>
+    <p class="cf-cta-text cf-reveal cf-d1">{texto}</p>
+    <a href={withBase("/contacto")} class="cf-btn cf-reveal cf-d2" style="margin-top:2.2rem">{boton} →</a>
+  </div>
+</section>

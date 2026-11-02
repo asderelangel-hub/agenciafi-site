@@ -3,80 +3,122 @@ import { Image } from "astro:assets";
 import CreativeLayout from "../layouts/CreativeLayout.astro";
 import CreativeHeader from "../components/creative/CreativeHeader.astro";
 import CreativeFooter from "../components/creative/CreativeFooter.astro";
-import CreativeContact from "../components/creative/CreativeContact.astro";
-import { timeline, equipo, amigos } from "../data/site";
+import CreativeCta from "../components/creative/CreativeCta.astro";
+import { equipo, amigos } from "../data/site";
 import { img } from "../lib/media";
 
-const heroPhoto = img("fotoequiponueva.png");
+const teamPhoto = img("fotoequiponueva.png");
+const simbolo = img("simbolo.png");
+const iniciales = (n: string) => n.split(" ").map((p) => p[0]).slice(0, 2).join("");
 // duplicar amigos para loop continuo del marquee
 const amigosLoop = [...amigos, ...amigos];
 ---
 
 <CreativeLayout
-  title="Somos Fi — Equipo e historia | Agencia Fi"
-  description="Conoce al equipo de Agencia Fi: periodistas que hacen comunicación estratégica con propósito. Nuestra historia, el equipo y los amigos de Fi."
+  title="Somos Fi — Periodistas que piensan como estrategas | Agencia Fi"
+  description="Agencia Fi es una consultora boutique especializada en comunicación estratégica, reputación corporativa, coaching y sostenibilidad. Conoce a nuestro equipo."
 >
   <CreativeHeader active="somos" />
 
-  <!-- HERO -->
+  <!-- 1. SOMOS PERIODISTAS -->
   <section class="cf-page-hero">
     <div class="cf-aurora">
       <div class="cf-blob cf-blob-1"></div>
       <div class="cf-blob cf-blob-2"></div>
     </div>
     <div class="cf-wrap" style="position:relative;z-index:2">
-      <p class="cf-kicker cf-reveal">Quiénes somos</p>
-      <h1 class="cf-grad-text cf-reveal cf-d1">Somos Fi</h1>
-      <p class="cf-hero-lead cf-reveal cf-d2" style="max-width:50ch">
-        Agencia Fi surge de un grupo de periodistas, amantes del reporteo y de la
-        prensa, que descubren como agencia de comunicaciones una nueva manera de
-        contribuir a la sociedad.
+      <p class="cf-kicker cf-reveal">Somos Fi</p>
+      <h1 class="cf-h1-statement cf-reveal cf-d1">
+        Somos periodistas. <em>Pensamos como estrategas.</em>
+      </h1>
+      <p class="cf-hero-lead cf-reveal cf-d2" style="max-width:56ch">
+        Agencia Fi nació de la convicción de que la comunicación puede hacer mucho
+        más que difundir información. Puede construir confianza, fortalecer
+        relaciones y generar valor para las organizaciones.
       </p>
     </div>
   </section>
 
-  <!-- LÍNEA DE TIEMPO -->
-  <section class="cf-section" style="padding-top:2rem">
-    <div class="cf-wrap">
-      <div class="cf-section-head cf-reveal" style="text-align:center;margin:0 auto 3.5rem">
-        <p class="cf-kicker" style="justify-content:center">Nuestra historia</p>
+  <section class="cf-section" style="padding-top:1.5rem">
+    <div class="cf-wrap cf-split cf-split-media">
+      <div class="cf-media-frame cf-reveal">
+        <Image src={teamPhoto} alt="Equipo de Agencia Fi" width={760} height={570} />
       </div>
-      <div class="cf-timeline">
-        {
-          timeline.map((t) => (
-            <div class="cf-tl-item cf-reveal">
-              <span class="cf-tl-date">{t.fecha}</span>
-              <h3>{t.titulo}</h3>
-              <p>{t.texto}</p>
-            </div>
-          ))
-        }
+      <div class="cf-prose cf-reveal cf-d1">
+        <p class="cf-prose-lead">
+          Hoy somos una consultora boutique especializada en comunicación
+          estratégica, reputación corporativa, coaching y sostenibilidad.
+        </p>
+        <p>
+          Combinamos experiencia en medios, conocimiento del entorno empresarial y
+          pensamiento estratégico para acompañar a organizaciones que enfrentan
+          desafíos de posicionamiento, transformación y reputación.
+        </p>
+        <p>
+          Trabajamos con atención personalizada y participación directa de
+          profesionales senior. Porque creemos que una buena asesoría no depende del
+          tamaño de una agencia, sino de su capacidad de comprender, anticipar y
+          actuar.
+        </p>
       </div>
     </div>
   </section>
 
-  <!-- EQUIPO -->
+  <!-- 2. NUESTRA FILOSOFÍA -->
+  <section class="cf-manifesto cf-alianza">
+    <Image src={simbolo} alt="" class="cf-manifesto-mark" />
+    <div class="cf-wrap cf-split" style="position:relative;z-index:2">
+      <div class="cf-reveal">
+        <p class="cf-kicker cf-kicker-light">Nuestra filosofía</p>
+        <h2>Comprender antes de <em>comunicar</em>.</h2>
+      </div>
+      <div class="cf-prose cf-reveal cf-d1">
+        <p>
+          No creemos en estrategias desconectadas del negocio ni en contenidos que
+          existen únicamente para llenar espacios. Creemos en hacer las preguntas
+          correctas, investigar, escuchar y construir relatos que tengan sentido
+          para las organizaciones y sus públicos.
+        </p>
+        <p>
+          La cercanía, el criterio y la experiencia son parte de nuestra manera de
+          trabajar.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. NUESTRO EQUIPO -->
   <section class="cf-section">
     <div class="cf-wrap">
-      <div class="cf-section-head cf-reveal" style="text-align:center;margin:0 auto 3.5rem">
+      <div class="cf-section-head cf-reveal" style="text-align:center;margin:0 auto 3.5rem;max-width:720px">
         <p class="cf-kicker" style="justify-content:center">El equipo</p>
         <h2>Nuestro <em>equipo</em></h2>
+        <p>
+          Un equipo de periodistas y consultores que combina experiencia en medios,
+          comunicación corporativa, coaching, reputación, sostenibilidad, regulación
+          y contenidos digitales. Trabajamos directamente con nuestros clientes y
+          nos involucramos en los desafíos de cada organización.
+        </p>
       </div>
       <div class="cf-team-grid">
         {
           equipo.map((m, i) => (
             <a
-              href={m.linkedin}
-              target="_blank"
-              rel="noopener"
+              href={m.linkedin ?? `mailto:${m.email}`}
+              target={m.linkedin ? "_blank" : undefined}
+              rel={m.linkedin ? "noopener" : undefined}
               class={`cf-member cf-reveal cf-d${(i % 4) + 1}`}
             >
               <div class="cf-member-photo">
-                <Image src={img(m.foto)} alt={m.nombre} width={336} height={336} />
+                {m.foto ? (
+                  <Image src={img(m.foto)} alt={m.nombre} width={336} height={336} />
+                ) : (
+                  <span class="cf-member-initials" aria-hidden="true">{iniciales(m.nombre)}</span>
+                )}
               </div>
               <h3>{m.nombre}</h3>
-              <p class="cf-role">{m.cargo}</p>
-              <span class="cf-member-link">LinkedIn ↗</span>
+              {m.cargo && <p class="cf-role">{m.cargo}</p>}
+              <span class="cf-member-link">{m.linkedin ? "LinkedIn ↗" : "Email ↗"}</span>
             </a>
           ))
         }
@@ -84,16 +126,7 @@ const amigosLoop = [...amigos, ...amigos];
     </div>
   </section>
 
-  <!-- PROPÓSITO (banner de foto) -->
-  <section class="cf-proposito">
-    <img class="cf-prop-bg" src={heroPhoto.src} alt="" />
-    <div class="cf-prop-tint"></div>
-    <p class="cf-prop-text cf-reveal">
-      Nuestro propósito es ser <em>un puente</em>: que la comunicación fluya entre los actores de la sociedad.
-    </p>
-  </section>
-
-  <!-- AMIGOS FI (marquee) -->
+  <!-- 4. AMIGOS FI (marquee, igual que en el sitio anterior) -->
   <section class="cf-section" style="padding-top:0">
     <div class="cf-wrap">
       <div class="cf-section-head cf-reveal" style="text-align:center;margin:0 auto 3rem">
@@ -116,6 +149,6 @@ const amigosLoop = [...amigos, ...amigos];
     </div>
   </section>
 
-  <CreativeContact />
+  <CreativeCta />
   <CreativeFooter />
 </CreativeLayout>

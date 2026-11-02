@@ -4,8 +4,8 @@ import { getCollection } from "astro:content";
 import CreativeLayout from "../layouts/CreativeLayout.astro";
 import CreativeHeader from "../components/creative/CreativeHeader.astro";
 import CreativeFooter from "../components/creative/CreativeFooter.astro";
-import CreativeContact from "../components/creative/CreativeContact.astro";
-import { pilares, servicios } from "../data/site";
+import CreativeCta from "../components/creative/CreativeCta.astro";
+import { diferenciales, lineasServicio, formacionEjecutiva, luzVerde, pasos } from "../data/site";
 import { img, icon } from "../lib/media";
 import { withBase } from "../lib/base";
 
@@ -18,15 +18,16 @@ const posts = (await getCollection("blog", ({ data }) => !data.draft))
 const featured = posts[0];
 const rest = posts.slice(1, 5);
 const fmt = (d: Date) => d.toLocaleDateString("es-CL", { year: "numeric", month: "short", day: "numeric" });
+const num = (i: number) => String(i + 1).padStart(2, "0");
 ---
 
 <CreativeLayout
-  title="Agencia Fi — Comunicación estratégica que resuena"
-  description="Conectamos tu propósito con el mundo a través de las comunicaciones. Estrategia 360, comunicación de crisis y digital para empresas y organizaciones en Chile."
+  title="Agencia Fi — Comunicación estratégica, reputación y sostenibilidad"
+  description="Ayudamos a empresas y organizaciones a comprender su entorno, construir confianza y fortalecer su posicionamiento. Comunicación estratégica, reputación y sostenibilidad."
 >
   <CreativeHeader />
 
-  <!-- HERO -->
+  <!-- 1. HERO -->
   <section class="cf-hero">
     <div class="cf-aurora">
       <div class="cf-blob cf-blob-1"></div>
@@ -38,16 +39,17 @@ const fmt = (d: Date) => d.toLocaleDateString("es-CL", { year: "numeric", month:
         <div>
           <p class="cf-kicker cf-reveal">Agencia de comunicaciones</p>
           <h1 class="cf-reveal cf-d1">
-            Buscamos <span class="cf-word-rot" id="cf-word">conectar</span><br />
-            <span class="cf-em">tu propósito</span> con el mundo.
+            La comunicación es la herramienta.
+            <span class="cf-em">La reputación es el resultado.</span>
           </h1>
           <p class="cf-hero-lead cf-reveal cf-d2">
-            En un mundo saturado de información, hacemos que tu voz resuene. Somos
-            un grupo de periodistas convertidos en estrategas de la comunicación.
+            Ayudamos a empresas y organizaciones a comprender su entorno, construir
+            confianza y fortalecer su posicionamiento. Combinamos estrategia,
+            experiencia periodística y conocimiento del negocio para transformar
+            desafíos en oportunidades.
           </p>
           <div class="cf-hero-actions cf-reveal cf-d3">
-            <a href="#contacto" class="cf-btn">Conversemos →</a>
-            <a href={withBase("/somos-fi")} class="cf-btn cf-btn-ghost">Conoce Fi</a>
+            <a href="#servicios" class="cf-btn">Conoce lo que hacemos →</a>
           </div>
         </div>
         <div class="cf-hero-photo cf-reveal cf-d2">
@@ -62,21 +64,38 @@ const fmt = (d: Date) => d.toLocaleDateString("es-CL", { year: "numeric", month:
     </div>
   </section>
 
-  <!-- CÓMO LO HACEMOS -->
+  <!-- 2. NUESTRA FORMA DE TRABAJAR -->
   <section class="cf-section">
     <div class="cf-wrap">
-      <div class="cf-section-head cf-reveal">
-        <p class="cf-kicker">Cómo lo hacemos</p>
-        <h2>Tres <em>pilares</em> para que tu voz resuene.</h2>
-        <p>Trabajamos a la medida, nos articulamos para cubrir tus necesidades y juntos hacemos resonar tu marca.</p>
+      <div class="cf-split">
+        <div class="cf-section-head cf-reveal" style="margin-bottom:0">
+          <p class="cf-kicker">Nuestra forma de trabajar</p>
+          <h2>No se trata solo de comunicar, sino que se trata de generar <em>confianza</em>.</h2>
+        </div>
+        <div class="cf-prose cf-reveal cf-d1">
+          <p>
+            En Agencia Fi creemos que una buena estrategia de comunicación comienza
+            mucho antes de contar una historia. Comienza por entender el negocio,
+            interpretar el contexto y reconocer los desafíos que enfrenta cada
+            organización.
+          </p>
+          <p>
+            Somos una consultora boutique de comunicaciones estratégicas, reputación
+            y sostenibilidad. Trabajamos directamente con nuestros clientes,
+            aportando experiencia, criterio periodístico y una mirada integral para
+            construir relaciones de confianza con sus públicos.
+          </p>
+        </div>
       </div>
+
+      <h3 class="cf-subhead cf-reveal">Qué nos diferencia</h3>
       <div class="cf-pilares">
         {
-          pilares.map((p, i) => (
+          diferenciales.map((d, i) => (
             <div class={`cf-pilar cf-reveal cf-d${i + 1}`}>
-              <span class="cf-pilar-idx">0{i + 1} / 03</span>
-              <div class="cf-pilar-circle"><img src={icon(p.icono)} alt="" /></div>
-              <h3>{p.nombre}</h3>
+              <span class="cf-pilar-idx">{num(i)} / 03</span>
+              <h3>{d.titulo}</h3>
+              <p>{d.texto}</p>
             </div>
           ))
         }
@@ -84,61 +103,147 @@ const fmt = (d: Date) => d.toLocaleDateString("es-CL", { year: "numeric", month:
     </div>
   </section>
 
-  <!-- BANNER FOTO -->
-  <section class="cf-photo-banner">
+  <!-- 3. BANNER OBSERVATORIO FI -->
+  <section class="cf-photo-banner cf-banner-cta">
     <Image src={bannerPhoto} alt="" width={1600} height={760} />
     <div class="cf-banner-tint"></div>
-    <p class="cf-banner-text cf-reveal">
-      Trabajamos a la medida de los clientes, nos articulamos para cubrir las
-      necesidades y juntos, hacemos resonar tu marca.
-    </p>
+    <div class="cf-banner-body cf-reveal">
+      <p class="cf-kicker cf-kicker-light">Observatorio Fi</p>
+      <h2>Estudiamos cómo cambian las empresas.</h2>
+      <p>
+        Investigamos las transformaciones que están redefiniendo el mundo
+        empresarial chileno y sus implicancias para la reputación, la
+        sostenibilidad y la comunicación de las organizaciones.
+      </p>
+      <a href={withBase("/observatorio-fi")} class="cf-btn cf-btn-accent">Explora el Observatorio Fi →</a>
+    </div>
   </section>
 
-  <!-- SERVICIOS (bento) -->
-  <section class="cf-section cf-section-soft">
+  <!-- 4. SERVICIOS (acordeón) -->
+  <section class="cf-section cf-section-soft" id="servicios">
     <div class="cf-wrap">
-      <div class="cf-section-head cf-reveal">
-        <p class="cf-kicker">Nuestros servicios</p>
-        <h2>Construimos contigo la <em>historia</em> que quieres contar.</h2>
+      <div class="cf-section-head cf-reveal" style="max-width:760px">
+        <p class="cf-kicker">Servicios</p>
+        <h2>Soluciones estratégicas para construir <em>reputación</em>, confianza y posicionamiento.</h2>
+        <p>
+          Combinamos distintas especialidades para diseñar respuestas a la medida
+          de cada organización. Desde la estrategia hasta la implementación,
+          acompañamos a nuestros clientes con criterio, experiencia y atención
+          cercana.
+        </p>
       </div>
-      <div class="cf-bento">
+
+      <div class="cf-acc-list">
         {
-          servicios.map((s, i) => (
-            <div class={`cf-bento-card cf-reveal cf-d${(i % 4) + 1}`}>
-              <div style="display:flex;justify-content:space-between;align-items:flex-start">
-                <div class="cf-bento-icon"><img src={icon(s.icono)} alt="" /></div>
-                <span class="cf-bento-num">0{i + 1}</span>
+          lineasServicio.map((s, i) => (
+            <details class="cf-acc cf-reveal">
+              <summary>
+                <span class="cf-acc-num">{num(i)}</span>
+                <span class="cf-acc-head">
+                  <span class="cf-acc-title">{s.titulo}</span>
+                  <span class="cf-acc-lead">{s.bajada}</span>
+                </span>
+                <span class="cf-acc-icon" aria-hidden="true"></span>
+              </summary>
+              <div class="cf-acc-body">
+                <p>{s.texto}</p>
+                <ul>
+                  {s.items.map((it) => <li>{it}</li>)}
+                </ul>
               </div>
-              <div>
-                <h3>{s.nombre}</h3>
-                <p>Comunicación con propósito</p>
-              </div>
-            </div>
+            </details>
           ))
         }
       </div>
+
+      <div class="cf-formacion cf-reveal">
+        <div class="cf-bento-icon"><img src={icon("icon-chalkboard.svg")} alt="" /></div>
+        <div>
+          <h3>{formacionEjecutiva.titulo}</h3>
+          {formacionEjecutiva.parrafos.map((p) => <p>{p}</p>)}
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- MANIFIESTO -->
-  <section class="cf-manifesto">
-    <Image src={simbolo} alt="" class="cf-manifesto-mark" />
+  <!-- 5. BANNER AGENCIA FI + LUZ VERDE (con la identidad de Luz Verde) -->
+  <section class="cf-luzverde" id="luz-verde">
+    <video
+      class="cf-lv-video"
+      src={withBase("/video/luzverde.mp4")}
+      poster={withBase("/video/luzverde-poster.webp")}
+      muted
+      playsinline
+      preload="metadata"
+      aria-label="Logo de Luz Verde"
+    ></video>
+    <!-- Líneas: corren bajo el texto y suben a unirse con las ondas del video -->
+    <svg class="cf-lv-lines" viewBox="0 0 1440 300" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <linearGradient id="cf-lv-grad" x1="0" x2="1" y1="0" y2="0">
+          <stop offset="0" stop-color="#5cd6a0" stop-opacity="0.3" />
+          <stop offset="0.55" stop-color="#5cd6a0" stop-opacity="0.8" />
+          <stop offset="1" stop-color="#5cd677" stop-opacity="0.35" />
+        </linearGradient>
+      </defs>
+      <path pathLength="1" d="M0,235 C300,250 520,232 700,165 S1000,45 1440,75" />
+      <path pathLength="1" d="M0,252 C320,262 560,250 760,185 S1080,75 1440,125" />
+      <path pathLength="1" d="M0,220 C280,234 600,222 820,148 S1200,25 1440,45" />
+    </svg>
+    <div class="cf-wrap cf-lv-inner">
+      <div class="cf-lv-copy">
+        <p class="cf-kicker cf-kicker-light cf-reveal">Agencia Fi + Luz Verde</p>
+        <h2 class="cf-reveal cf-d1">Estrategia y contenidos que generan <em>conversación</em>.</h2>
+        <div class="cf-prose cf-reveal cf-d2">
+          <p>
+            Nuestra alianza estratégica con <strong>Luz Verde</strong>, plataforma
+            informativa especializada en inversión, sostenibilidad, infraestructura y
+            desarrollo empresarial, amplía nuestras capacidades de posicionamiento.
+          </p>
+          <p>
+            A través de su programa en <strong>Radio 13C</strong> y su presencia en
+            YouTube, Spotify y redes sociales, Luz Verde conecta la actualidad
+            empresarial con distintas audiencias.
+          </p>
+          <p>
+            Juntos, combinamos comunicación estratégica y producción periodística para
+            desarrollar <strong>coberturas de eventos, entrevistas, podcasts y
+            contenidos audiovisuales</strong> que dan visibilidad a proyectos,
+            organizaciones y líderes.
+          </p>
+          {
+            luzVerde.url && (
+              <a href={luzVerde.url} target="_blank" rel="noopener" class="cf-btn cf-lv-btn" style="margin-top:0.6rem">
+                Conoce Luz Verde ↗
+              </a>
+            )
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. CÓMO TRABAJAMOS -->
+  <section class="cf-section cf-section-soft">
     <div class="cf-wrap">
-      <p class="cf-manifesto-text">
-        <span class="cf-word">Desafiamos</span>
-        <span class="cf-word">estándares,</span>
-        <span class="cf-word">creamos</span>
-        <span class="cf-word">oportunidades</span>
-        <span class="cf-word">y</span>
-        <span class="cf-word">hacemos</span>
-        <span class="cf-word cf-hi">resonar</span>
-        <span class="cf-word cf-hi">tu</span>
-        <span class="cf-word cf-hi">voz.</span>
-      </p>
+      <div class="cf-section-head cf-reveal" style="text-align:center;margin:0 auto 3.5rem">
+        <h2>Cómo <em>trabajamos</em></h2>
+      </div>
+      <ol class="cf-steps">
+        {
+          pasos.map((p, i) => (
+            <li class={`cf-step cf-reveal cf-d${(i % 4) + 1}`}>
+              <span class="cf-step-num">{num(i)}</span>
+              <h3>{p.titulo}</h3>
+              <p>{p.texto}</p>
+            </li>
+          ))
+        }
+      </ol>
     </div>
   </section>
 
-  <!-- MIRADA FI (blog editorial) -->
+  <!-- 7. MIRADA FI (noticias) -->
   <section class="cf-section">
     <div class="cf-wrap">
       <div class="cf-section-head cf-reveal" style="display:flex;justify-content:space-between;align-items:flex-end;max-width:none;gap:1rem;flex-wrap:wrap">
@@ -183,24 +288,27 @@ const fmt = (d: Date) => d.toLocaleDateString("es-CL", { year: "numeric", month:
     </div>
   </section>
 
-  <CreativeContact />
+  <!-- 8. CONVERSEMOS -->
+  <CreativeCta />
   <CreativeFooter />
 </CreativeLayout>
 
 <script>
-  // Rotador de palabras del hero (fundido — confiable, sin clipping)
-  const palabras = ["conectar", "impulsar", "transformar", "posicionar"];
-  const el = document.getElementById("cf-word");
-  if (el) {
-    let i = 0;
-    el.style.transition = "opacity 0.3s ease";
-    setInterval(() => {
-      el.style.opacity = "0";
-      setTimeout(() => {
-        i = (i + 1) % palabras.length;
-        el.textContent = palabras[i];
-        el.style.opacity = "1";
-      }, 300);
-    }, 2600);
+  // Banner Luz Verde: al entrar en pantalla se dibujan las líneas y el video
+  // se reproduce una vez (termina en el logo). Con movimiento reducido queda el póster.
+  const lv = document.getElementById("luz-verde");
+  const video = lv?.querySelector("video");
+  if (lv && video) {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0].isIntersecting) return;
+        lv.classList.add("cf-lv-on");
+        if (!reduce) video.play().catch(() => {});
+        io.disconnect();
+      },
+      { threshold: 0.35 }
+    );
+    io.observe(lv);
   }
 </script>

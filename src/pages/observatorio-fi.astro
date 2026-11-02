@@ -1,0 +1,139 @@
+---
+import { Image } from "astro:assets";
+import CreativeLayout from "../layouts/CreativeLayout.astro";
+import CreativeHeader from "../components/creative/CreativeHeader.astro";
+import CreativeFooter from "../components/creative/CreativeFooter.astro";
+import CreativeCta from "../components/creative/CreativeCta.astro";
+import { temasObservatorio, estudios } from "../data/site";
+import { img } from "../lib/media";
+import { withBase } from "../lib/base";
+
+const simbolo = img("simbolo.png");
+const num = (i: number) => String(i + 1).padStart(2, "0");
+---
+
+<CreativeLayout
+  title="Observatorio Fi — Transformación empresarial | Agencia Fi"
+  description="Investigamos las transformaciones que están redefiniendo el mundo empresarial chileno y sus implicancias para la reputación, la sostenibilidad y la comunicación de las organizaciones."
+>
+  <CreativeHeader active="observatorio" />
+
+  <!-- 1. ESTUDIAMOS CÓMO CAMBIAN LAS EMPRESAS -->
+  <section class="cf-page-hero">
+    <div class="cf-aurora">
+      <div class="cf-blob cf-blob-1"></div>
+      <div class="cf-blob cf-blob-2"></div>
+    </div>
+    <div class="cf-wrap" style="position:relative;z-index:2">
+      <p class="cf-kicker cf-reveal">Observatorio Fi · Transformación empresarial</p>
+      <h1 class="cf-h1-statement cf-reveal cf-d1">
+        Estudiamos cómo <em>cambian las empresas.</em>
+      </h1>
+      <p class="cf-hero-lead cf-reveal cf-d2" style="max-width:58ch">
+        Investigamos las transformaciones que están redefiniendo el mundo
+        empresarial chileno y sus implicancias para la reputación, la
+        sostenibilidad y la comunicación de las organizaciones.
+      </p>
+    </div>
+  </section>
+
+  <!-- 2. ¿QUÉ ES OBSERVATORIO FI? -->
+  <section class="cf-section" style="padding-top:2rem">
+    <div class="cf-wrap cf-split">
+      <div class="cf-section-head cf-reveal" style="margin-bottom:0">
+        <h2>¿Qué es <em>Observatorio Fi</em>?</h2>
+      </div>
+      <div class="cf-prose cf-reveal cf-d1">
+        <p>
+          Las empresas enfrentan transformaciones regulatorias, sociales,
+          tecnológicas y ambientales que están cambiando la manera de hacer negocios.
+        </p>
+        <p>
+          En Observatorio Fi buscamos comprender esos cambios antes de que se
+          conviertan en desafíos reputacionales. A través del periodismo de datos, la
+          investigación documental y el análisis de información pública,
+          identificamos tendencias, tensiones y oportunidades que ayudan a
+          interpretar el entorno empresarial.
+        </p>
+        <p>
+          Nuestro objetivo es generar conocimiento que contribuya a mejores
+          decisiones y nuevas conversaciones sobre el futuro de las organizaciones.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. QUÉ INVESTIGAMOS -->
+  <section class="cf-section cf-section-soft">
+    <div class="cf-wrap">
+      <div class="cf-section-head cf-reveal">
+        <h2>Qué <em>investigamos</em></h2>
+      </div>
+      <div class="cf-grid2">
+        {
+          temasObservatorio.map((t, i) => (
+            <div class={`cf-pilar cf-reveal cf-d${(i % 2) + 1}`}>
+              <span class="cf-pilar-idx">{num(i)} / 04</span>
+              <h3>{t.titulo}</h3>
+              <p>{t.texto}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. NUESTROS ESTUDIOS -->
+  <section class="cf-section">
+    <div class="cf-wrap">
+      <div class="cf-section-head cf-reveal">
+        <h2>Nuestros <em>estudios</em></h2>
+      </div>
+      {
+        estudios.map((e) => (
+          <article class="cf-study cf-reveal">
+            <a href={withBase(e.href)} class="cf-study-img" tabindex="-1" aria-hidden="true">
+              <img src={withBase(e.imagen)} alt="" loading="lazy" />
+            </a>
+            <div class="cf-study-body">
+              <span class="cf-post-date">{e.meta}</span>
+              <h3>{e.titulo}</h3>
+              <p>{e.texto}</p>
+              <a href={withBase(e.href)} class="cf-btn">Conoce el estudio →</a>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- 5. CÓMO INVESTIGAMOS -->
+  <section class="cf-manifesto cf-alianza">
+    <Image src={simbolo} alt="" class="cf-manifesto-mark" />
+    <div class="cf-wrap cf-split" style="position:relative;z-index:2">
+      <div class="cf-reveal">
+        <p class="cf-kicker cf-kicker-light">Cómo investigamos</p>
+        <h2>No buscamos acumular información.</h2>
+      </div>
+      <div class="cf-prose cf-reveal cf-d1">
+        <p>
+          Combinamos herramientas del periodismo con análisis empresarial: bases de
+          datos públicas, estadísticas, documentos regulatorios, jurisprudencia,
+          benchmarking y revisión histórica.
+        </p>
+        <p class="cf-prose-lead">
+          Buscamos encontrar aquello que ayuda a comprender qué está cambiando y
+          por qué importa.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEL CONOCIMIENTO A LA ESTRATEGIA -->
+  <CreativeCta
+    titulo="Del conocimiento a la estrategia"
+    texto="Los hallazgos del Observatorio Fi alimentan nuestra mirada estratégica y nos permiten acompañar a las organizaciones con una comprensión más profunda de su entorno."
+    boton="Conversemos"
+  />
+  <CreativeFooter />
+</CreativeLayout>

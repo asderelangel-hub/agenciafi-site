@@ -9,7 +9,9 @@ const { active } = Astro.props as { active?: string };
 
 const links = [
   { label: "Somos Fi", href: withBase("/somos-fi"), key: "somos" },
+  { label: "Observatorio Fi", href: withBase("/observatorio-fi"), key: "observatorio" },
   { label: "Mirada Fi", href: withBase("/mirada-fi"), key: "mirada" },
+  { label: "Contacto", href: withBase("/contacto"), key: "contacto" },
 ];
 ---
 
@@ -26,7 +28,6 @@ const links = [
         </a>
       ))
     }
-    <a href={`${withBase("/")}#contacto`} class="cf-nav-link">Contacto</a>
     <a href={site.social.instagram} target="_blank" rel="noopener" class="cf-nav-link">IG ↗</a>
   </nav>
 </header>
