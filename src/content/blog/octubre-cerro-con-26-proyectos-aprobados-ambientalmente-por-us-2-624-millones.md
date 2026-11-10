@@ -4,7 +4,7 @@ description: |-
   Tovaku, de Pucobre con Codelco, lideró el ranking de inversión con US$870 millones. También registró la mayor dotación prevista durante la construcción, con hasta 984 trabajadores, según un análisis de Agencia Fi.
 
   Una faena minera, un parque solar y un conjunto habitacional figuran entre los proyectos que declararon las mayores dotaciones de trabajadores para su construcción en octubre. El análisis de Agencia Fi, elaborado a partir de información del Sistema de Evaluación de Impacto Ambiental (SEIA), identificó 26 iniciativas con aprobación ambiental durante el mes, que suman US$2.624 millones en inversión declarada.
-pubDate: 2026-11-09T20:41:34.258Z
+pubDate: 2026-11-10T20:41:34.258Z
 cover: /images/blog/Mina-de-cobre-en-los-Andes-áridos.png
 categoria: Mirada Fi
 ---
